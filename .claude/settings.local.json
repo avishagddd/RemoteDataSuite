@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__figma-dev-mode-mcp-server__get_design_context",
+      "mcp__figma-dev-mode-mcp-server__get_screenshot",
+      "Bash(cd /c/Users/avish/Studio/Fourtec/RemoteDataSuite && npm run build 2>&1)",
+      "Bash(curl:*)",
+      "WebFetch(domain:www.figma.com)"
+    ]
+  }
+}
