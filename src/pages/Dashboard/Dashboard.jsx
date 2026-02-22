@@ -310,10 +310,55 @@ function AlarmPanel({ deviceName, hasAlarm, alarmCount, onClose }) {
   )
 }
 
+// ── InfoPanel ──────────────────────────────────────────────────
+function InfoPanel({ deviceName, onClose }) {
+  return (
+    <div className="alarm-overlay" onClick={onClose}>
+      <div className="alarm-panel" onClick={e => e.stopPropagation()}>
+        <div className="info-panel-header">
+          <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
+            <div className="alarm-header-icon"><InfoIcon /></div>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+              <span className="alarm-panel-title">{deviceName}</span>
+            </div>
+          </div>
+          <button className="alarm-panel-close" onClick={onClose} aria-label="Close">
+            <CloseIcon />
+          </button>
+        </div>
+
+        <div className="info-content">
+          <div className="info-row">
+            <div className="info-row-label"><ThermometerIcon />Temperature Min</div>
+            <div className="info-row-measured">27°C</div>
+            <div className="info-row-limit">75%</div>
+          </div>
+          <div className="info-row">
+            <div className="info-row-label"><ThermometerIcon />Temperature Max</div>
+            <div className="info-row-measured">24°C</div>
+            <div className="info-row-limit">Level 3</div>
+          </div>
+          <div className="info-row">
+            <div className="info-row-label"><DropletIcon />Humidity Min</div>
+            <div className="info-row-measured">27°C</div>
+            <div className="info-row-limit">Level 3</div>
+          </div>
+          <div className="info-row">
+            <div className="info-row-label"><DropletIcon />Humidity Max</div>
+            <div className="info-row-measured">60%</div>
+            <div className="info-row-limit">Level 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ── DeviceCard ──────────────────────────────────────────────────
 
 function DeviceCard({ id, name, serialNumber, version, sampleRate, battery, temperature, humidity, isRunning, alarmCount, hasAlarm, onToggleRun }) {
   const [alarmOpen, setAlarmOpen] = useState(false)
+  const [infoOpen, setInfoOpen] = useState(false)
   const alarmColor = hasAlarm ? '#B42318' : '#535862'
 
   return (
@@ -328,11 +373,18 @@ function DeviceCard({ id, name, serialNumber, version, sampleRate, battery, temp
         />
       )}
 
+      {infoOpen && (
+        <InfoPanel
+          deviceName={name}
+          onClose={() => setInfoOpen(false)}
+        />
+      )}
+
       {/* ── Card header: name + action icons ── */}
       <div className="card-header-row">
         <h2 className="device-name">{name}</h2>
         <div className="device-icon-actions">
-          <button className="icon-btn" aria-label="Device info">
+          <button className="icon-btn" aria-label="Device info" onClick={() => setInfoOpen(true)}>
             <InfoIcon />
           </button>
           <button className="bell-btn" aria-label={`${alarmCount} alarm${alarmCount !== 1 ? 's' : ''}`} onClick={() => setAlarmOpen(true)}>
