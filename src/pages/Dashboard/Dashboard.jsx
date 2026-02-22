@@ -178,12 +178,14 @@ function BellIcon({ color = '#535862' }) {
 }
 
 // No asset file — kept inline
-function BatteryIcon() {
+function BatteryIcon({ level = 100 }) {
+  const clamped   = Math.max(0, Math.min(100, level))
+  const fillWidth = Math.round(14 * clamped / 100)
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <rect x="1" y="6" width="18" height="12" rx="2" stroke="#535862" strokeWidth="1.5"/>
       <line x1="23" y1="13" x2="23" y2="11" stroke="#535862" strokeWidth="2" strokeLinecap="round"/>
-      <rect x="3" y="9" width="4" height="6" rx="0.5" fill="#535862"/>
+      {fillWidth > 0 && <rect x="3" y="9" width={fillWidth} height="6" rx="0.5" fill="#535862"/>}
     </svg>
   )
 }
@@ -218,10 +220,10 @@ function MailIcon({ color = '#004477' }) {
 
 // ── AlarmPanel ──────────────────────────────────────────────────
 
-function CloseIcon() {
+function CloseIcon({ color = '#A4A7AE' }) {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M15 5L5 15M5 5L15 15" stroke="#535862" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M15 5L5 15M5 5L15 15" stroke={color} strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
@@ -236,7 +238,7 @@ function AlarmPanel({ deviceName, hasAlarm, alarmCount, onClose }) {
         {/* Header */}
         <div className="alarm-panel-header">
           <div className="alarm-header-left">
-            <div className="alarm-header-icon">
+            <div className={`alarm-header-icon ${hasAlarm ? 'alarm-header-icon--error' : 'alarm-header-icon--muted'}`}>
               <BellIcon color={accentColor} />
             </div>
             <div className="alarm-header-title-group">
@@ -317,7 +319,7 @@ function InfoPanel({ deviceName, onClose }) {
       <div className="alarm-panel" onClick={e => e.stopPropagation()}>
         <div className="info-panel-header">
           <div style={{display: 'flex', alignItems: 'center', gap: 12}}>
-            <div className="alarm-header-icon"><InfoIcon /></div>
+            <div className="alarm-header-icon info-header-icon"><InfoIcon color="#414651" /></div>
             <div style={{display: 'flex', flexDirection: 'column'}}>
               <span className="alarm-panel-title">{deviceName}</span>
             </div>
@@ -328,23 +330,41 @@ function InfoPanel({ deviceName, onClose }) {
         </div>
 
         <div className="info-content">
+          {/* Table header */}
+          <div className="info-row info-row--header">
+            <div className="info-row-label"></div>
+            <div className="info-row-measured">Measured</div>
+            <div className="info-row-limit">Alert Limits</div>
+          </div>
           <div className="info-row">
-            <div className="info-row-label"><ThermometerIcon />Temperature Min</div>
+            <div className="info-row-label">
+              <span className="info-row-icon"><ThermometerIcon /></span>
+              Temperature Min
+            </div>
             <div className="info-row-measured">27°C</div>
             <div className="info-row-limit">75%</div>
           </div>
           <div className="info-row">
-            <div className="info-row-label"><ThermometerIcon />Temperature Max</div>
+            <div className="info-row-label">
+              <span className="info-row-icon"><ThermometerIcon /></span>
+              Temperature Max
+            </div>
             <div className="info-row-measured">24°C</div>
             <div className="info-row-limit">Level 3</div>
           </div>
           <div className="info-row">
-            <div className="info-row-label"><DropletIcon />Humidity Min</div>
+            <div className="info-row-label">
+              <span className="info-row-icon"><DropletIcon /></span>
+              Humidity Min
+            </div>
             <div className="info-row-measured">27°C</div>
             <div className="info-row-limit">Level 3</div>
           </div>
           <div className="info-row">
-            <div className="info-row-label"><DropletIcon />Humidity Max</div>
+            <div className="info-row-label">
+              <span className="info-row-icon"><DropletIcon /></span>
+              Humidity Max
+            </div>
             <div className="info-row-measured">60%</div>
             <div className="info-row-limit">Level 3</div>
           </div>
@@ -410,7 +430,7 @@ function DeviceCard({ id, name, serialNumber, version, sampleRate, battery, temp
           <span className="meta-label">Sample Rate</span> {sampleRate}
         </span>
         <button className="battery-btn" aria-label={`Battery ${battery}`}>
-          <BatteryIcon />
+          <BatteryIcon level={parseInt(battery, 10) || 0} />
           <span>{battery}</span>
         </button>
       </div>

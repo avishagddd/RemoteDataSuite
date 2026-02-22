@@ -6,6 +6,7 @@
   --color-brand-700:  #004477;
   --color-green:      #8CC24E;
   --color-gray-100:   #333333;
+  --color-gray-200:   #E9EAEB;
   --color-gray-300:   #D5D7DA;
   --color-gray-400:   #A4A7AE;
   --color-gray-500:   #717680;
@@ -563,13 +564,12 @@
   animation: alarm-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Info panel specific header (keeps header divider) */
+/* Info panel specific header (no divider — table starts directly below) */
 .info-panel-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border-bottom: 1px solid var(--color-gray-300);
   flex-shrink: 0;
 }
 
@@ -579,39 +579,96 @@
   flex-direction: column;
 }
 
+.info-header-icon {
+  border-color: var(--color-gray-300);
+}
+
+/* Ensure info header overrides the red outline on the generic alarm header */
+.alarm-header-icon.info-header-icon {
+  border: 1px solid var(--color-gray-300);
+}
+
+/* active alarm — red frame only */
+.alarm-header-icon.alarm-header-icon--error {
+  border: 1px solid var(--color-error-700);
+  background: var(--color-white);
+}
+
+/* inactive/muted — grey outline */
+.alarm-header-icon.alarm-header-icon--muted {
+  border: 1px solid var(--color-gray-300);
+  background: var(--color-white);
+}
+
 .info-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--color-gray-300);
+  gap: 8px;
+  padding: 20px 16px;
+  border-bottom: 1px solid var(--color-gray-200);
 }
 
 .info-row:last-child {
   border-bottom: none;
 }
 
+.info-row--header {
+  background-color: #FAFAFA;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.info-row--header .info-row-label,
+.info-row--header .info-row-measured,
+.info-row--header .info-row-limit {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-gray-500);
+}
+
 .info-row-label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: var(--color-gray-100);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  min-width: 0;
+}
+
+.info-row-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.info-row-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .info-row-measured {
   width: 72px;
-  text-align: right;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
+  font-weight: 400;
   color: var(--color-gray-700);
 }
 
 .info-row-limit {
   width: 72px;
-  text-align: right;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
   font-size: 14px;
+  font-weight: 400;
   color: var(--color-gray-500);
 }
 
@@ -656,7 +713,7 @@
   justify-content: center;
   border-radius: 8px;
   background: var(--color-white);
-  border: 1px solid var(--color-error-700);
+  border: 1px solid var(--color-gray-300);
   flex-shrink: 0;
 }
 
@@ -672,14 +729,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   background: none;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.15s ease;
   flex-shrink: 0;
+  align-self: flex-start;
+  padding: 0;
 }
 
 .alarm-panel-close:hover {
@@ -724,10 +783,8 @@
 
 .alarm-entry-divider {
   height: 1px;
-  background: var(--color-gray-300);
-  margin: 16px 0;
-  width: calc(100% - 32px);
-  margin-left: 16px;
+  background: var(--color-gray-200);
+  margin: 0 16px;
 }
 
 .alarm-entry-body {
@@ -768,7 +825,7 @@
 
 .alarm-entry-detail {
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 18px;
   color: var(--color-gray-500);
 }
