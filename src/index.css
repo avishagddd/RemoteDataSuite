@@ -4,7 +4,7 @@
   padding: 0;
 }
 
-html, body, #root {
+html, body {
   height: 100%;
 }
 
@@ -12,5 +12,36 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #ffffff;
+  background: linear-gradient(160deg, #eef4fa 0%, #e6ecf2 100%);
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ── Phone frame ─────────────────────────────────────────────── */
+.phone-frame {
+  width: min(375px, 100%);
+  height: 100%;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+@media (min-width: 376px) {
+  .phone-frame {
+    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Hide scrollbars inside the frame — feels native */
+.phone-frame ::-webkit-scrollbar {
+  display: none;
+}
+.phone-frame * {
+  scrollbar-width: none;
 }

@@ -5,8 +5,14 @@ import Dashboard from './pages/Dashboard/Dashboard'
 function App() {
   const [page, setPage] = useState('dashboard')
 
-  if (page === 'login') return <Login onLogin={() => setPage('dashboard')} />
-  return <Dashboard onLogout={() => setPage('login')} />
+  return (
+    <div className="phone-frame">
+      {page === 'login'
+        ? <Login onLogin={() => setPage('dashboard')} />
+        : <Dashboard onLogout={() => setPage('login')} />
+      }
+    </div>
+  )
 }
 
 export default App
